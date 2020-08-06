@@ -16,7 +16,7 @@
 function add_my_custom_menu(){
     add_menu_page(
         "customplugin", // page title
-        "Top Level Menu", // menu title
+        "Movie", // menu title
         "manage_options", // admin level
         "top-level-menu-slug",   // page slug
         "call_top_menu", // callback function
@@ -26,7 +26,7 @@ function add_my_custom_menu(){
     add_submenu_page(
         "top-level-menu-slug", //parent slug
         "Submenu1-title", //page title
-        "Submenu1", //menu title
+        "Dashboard", //menu title
         "manage_options", //capability = user_level_access
         "sub-menu1-slug", //menu slug
         "call_submenu1" //callback function
@@ -34,7 +34,7 @@ function add_my_custom_menu(){
     add_submenu_page(
         "top-level-menu-slug", //parent slug
         "Submenu2-title", //page title
-        "Submenu2", //menu title
+        "Settings", //menu title
         "manage_options", //capability = user_level_access
         "sub-menu2-slug", //menu slug
         "call_submenu2" //callback function
