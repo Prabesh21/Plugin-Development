@@ -13,6 +13,7 @@
  * Text Domain:       my-basics-plugin
  * Domain Path:       /languages
  */
+defined('ABSPATH') or die();
 function add_my_custom_menu(){
     add_menu_page(
         "customplugin", // page title
