@@ -39,17 +39,17 @@ class SettingApi{
         echo '<input name="eg_setting_name" id="eg_setting_name" type="checkbox" value="1" class="code" ' . checked( 1, get_option( 'eg_setting_name' ), false ) . ' /> Explanation text';
     }
     function eg_setting_callback_function_radio() {
-        echo '<input name="eg_setting_name_radio" id="eg_setting_name_radio" type="radio" value="1" class="code" ' . checked( 1, get_option( 'eg_setting_name_radio' ), false ) . ' /> English';
-        echo '<input name="eg_setting_name_radio" id="eg_setting_name_radio" type="radio" value="1" class="code" ' . checked( 2, get_option( 'eg_setting_name_radio' ), false ) . ' /> British';
+        echo '<input name="eg_setting_name_radio" id="eg_setting_name_radio" type="radio" value="1" class="code" ' . get_option( 'eg_setting_name_radio' ) . ' /> English';
+        echo '<input name="eg_setting_name_radio" id="eg_setting_name_radio" type="radio" value="1" class="code" ' . get_option( 'eg_setting_name_radio' ) . ' /> British';
     }
     function eg_setting_callback_function_textarea() {
-        echo '<input type="textarea" name="eg_setting_name_textarea" id="eg_setting_name_textarea" value="Message" class="code"  rows="4"  cols="50"' . checked( 1, get_option( 'eg_setting_name_textarea' ), false ) . '/>';   
+        echo '<input type="textarea" name="eg_setting_name_textarea" id="eg_setting_name_textarea" value="Message" class="code"  rows="4"  cols="50"' . get_option( 'eg_setting_name_textarea' ). '/>';   
     }
     function eg_setting_callback_function_input() {
-        echo '<input type="text" name="eg_setting_name_input" id="eg_setting_name_input" value="input" class="code"' . checked( 1, get_option( 'eg_setting_name_input' ), false ) . '/>';   
+        echo '<input type="text" name="eg_setting_name_input" id="eg_setting_name_input" value="input" class="code"' . get_option( 'eg_setting_name_input' ) . '/>';   
     }
     function eg_setting_callback_function_dropdown() {
-        echo '<select name="eg_setting_name_dropdown" id="eg_setting_name_dropdown"  class="code"' . checked( 1, get_option( 'eg_setting_name_dropdown' ), false ) . '>'.'<option value="volvo">Volvo</option>
+        echo '<select name="eg_setting_name_dropdown" id="eg_setting_name_dropdown"  class="code"' . get_option( 'eg_setting_name_dropdown' ). '>'.'<option value="volvo">Volvo</option>
         <option value="saab">Saab</option>
         <option value="mercedes">Mercedes</option>
         <option value="audi">Audi</option>'.'/>';   
