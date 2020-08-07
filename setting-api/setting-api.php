@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Setting APi
  * Plugin URI:        https://google.com/
- * Description:       Addes menus and sub-menu on activation.
+ * Description:       Adds setting section and fields in WordPress Setting's General.
  * Version:           1.10.3
  * Requires at least: 5.2
  * Requires PHP:      7.2
