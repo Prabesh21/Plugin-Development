@@ -99,7 +99,14 @@ class MySettingsPage
             array( $this, 'title_callback' ), 
             'my-setting-admin', 
             'setting_section_id'
-        );      
+        );
+        add_settings_field(
+            'checkbox', 
+            'Checkbox', 
+            array( $this, 'checkbox_callback' ), 
+            'my-setting-admin', 
+            'setting_section_id'
+        );            
     }
 
     /**
@@ -115,7 +122,9 @@ class MySettingsPage
 
         if( isset( $input['title'] ) )
             $new_input['title'] = sanitize_text_field( $input['title'] );
-
+        
+            if( isset( $input['checkbox'] ) )
+            $new_input['checkbox'] = sanitize_text_field( $input['checkbox'] );
         return $new_input;
     }
 
@@ -146,6 +155,12 @@ class MySettingsPage
         printf(
             '<input type="text" id="title" name="my_option_name[title]" value="%s" />',
             isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
+        );
+    }
+    public function checkbox_callback(){
+        printf(
+            '<input type="checkbox" id="checkbox" name="my_option_name[checkbox]" value="%s" />'.'Tick me',
+            isset( $this->options['checkbox'] ) ? esc_attr( $this->options['checkbox']) : ''
         );
     }
 }
