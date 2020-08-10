@@ -28,6 +28,22 @@ class MySettingsPage
     {
         add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
+        add_action( 'admin_init', array( $this, 'save_setting_details' ) );
+
+    }
+    public function save_setting_details(){
+        if(isset($_POST['my_submit_button'])){
+            $arr_op = array(
+                'my_id_number'=> isset($_POST['my_id_number']) ? absint($_POST['my_id_number']): "Default",
+                'my_title'=> isset($_POST['my_title']) ? sanitize_text_field($_POST['my_title']): "Default",
+                //'my_checkbox'=> isset($_POST['my_checkbox']) ? sanitize_checkbox($_POST['checkbox']): "Default",
+                'my_select'=> isset($_POST['my_select']) ? sanitize_text_field($_POST['my_select']): "Default",
+                'my_textarea'=> isset($_POST['my_textarea']) ? sanitize_textarea_field($_POST['my_textarea']): "Default",
+            );
+            if(!empty($arr_op)){
+                update_option('my_option_name', $arr_op);
+            }
+        }
     }
 
     /**
@@ -55,13 +71,13 @@ class MySettingsPage
         ?>
         <div class="wrap">
             <h1>My Settings</h1>
-            <form method="post" action="options.php">
+            <form method="post">
             <?php
                 // This prints out all hidden setting fields
                 settings_fields( 'my_option_group' );
                 do_settings_sections( 'my-setting-admin' );
-                submit_button();
             ?>
+            <input type="submit" name="my_submit_button" value="Save"/>
             </form>
         </div>
         <?php
@@ -72,13 +88,7 @@ class MySettingsPage
      */
     public function page_init()
     {        
-        register_setting(
-            'my_option_group', // Option group
-            'my_option_name', // Option name
-            array( $this, 'sanitize' ) // Sanitize
-        );
-
-        add_settings_section(
+         add_settings_section(
             'setting_section_id', // ID
             'My Custom Settings', // Title
             array( $this, 'print_section_info' ), // Callback
@@ -106,28 +116,22 @@ class MySettingsPage
             array( $this, 'checkbox_callback' ), 
             'my-setting-admin', 
             'setting_section_id'
-        );            
+        );   
+        add_settings_field(
+            'textarea', 
+            'Textarea', 
+            array( $this, 'textarea_callback' ), 
+            'my-setting-admin', 
+            'setting_section_id'
+        );
+        add_settings_field(
+            'select', 
+            'Select', 
+            array( $this, 'select_callback' ), 
+            'my-setting-admin', 
+            'setting_section_id'
+        );         
     }
-
-    /**
-     * Sanitize each setting field as needed
-     *
-     * @param array $input Contains all settings fields as array keys
-     */
-    public function sanitize( $input )
-    {
-        $new_input = array();
-        if( isset( $input['id_number'] ) )
-            $new_input['id_number'] = absint( $input['id_number'] );
-
-        if( isset( $input['title'] ) )
-            $new_input['title'] = sanitize_text_field( $input['title'] );
-        
-            if( isset( $input['checkbox'] ) )
-            $new_input['checkbox'] = sanitize_text_field( $input['checkbox'] );
-        return $new_input;
-    }
-
     /** 
      * Print the Section text
      */
@@ -142,8 +146,8 @@ class MySettingsPage
     public function id_number_callback()
     {
         printf(
-            '<input type="text" id="id_number" name="my_option_name[id_number]" value="%s" />',
-            isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
+            '<input type="text" id="my_id_number" name="my_id_number" value="%s" />',
+            isset( $this->options['my_id_number'] ) ? esc_attr( $this->options['my_id_number']) : ''
         );
     }
 
@@ -153,14 +157,30 @@ class MySettingsPage
     public function title_callback()
     {
         printf(
-            '<input type="text" id="title" name="my_option_name[title]" value="%s" />',
-            isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
+            '<input type="text" id="my_title" name="my_title" value="%s" />',
+            isset( $this->options['my_title'] ) ? esc_attr( $this->options['my_title']) : ''
         );
     }
     public function checkbox_callback(){
         printf(
-            '<input type="checkbox" id="checkbox" name="my_option_name[checkbox]" value="%s" />'.'Tick me',
-            isset( $this->options['checkbox'] ) ? esc_attr( $this->options['checkbox']) : ''
+            '<input type="checkbox" id="my_checkbox" name="my_checkbox" value="%s" />'.'Tick me',
+            isset( $this->options['my_checkbox'] ) ? esc_attr( $this->options['my_checkbox']) : ''
+        );
+    }
+    public function textarea_callback(){
+        printf(
+            '<textarea id="textarea" name="my_textarea" value="%s"></textarea>',
+            isset( $this->options['my_textarea'] ) ? esc_attr( $this->options['my_textarea']) : ''
+        );
+    }
+    public function select_callback(){
+        printf(
+            '<select id="my_select" name="my_select">
+            <option value="select">  Select </option>
+            <option value="male">    Male   </option>
+            <option value="female">  Female </option>
+            </select>',
+            isset( $this->options['my_select'] ) ? esc_attr( $this->options['my_select']) : ''
         );
     }
 }
