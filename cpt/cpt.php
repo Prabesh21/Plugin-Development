@@ -43,9 +43,9 @@ function my_cpt() {
   add_action( 'add_meta_boxes', 'movie_metabox' );
 function movie_metabox() {
     add_meta_box( 
-        'movie_info',
-        __( 'Movie Info', 'myplugin_textdomain' ),
-        'movie_info_cb',
+        'movie_info', //Unique ID
+        __( 'Movie Info', 'myplugin_textdomain' ),// Title
+        'movie_info_cb',//Callback function
         'movie', //should be same as in register_post_type handle
         'side',
         'high'
@@ -60,5 +60,22 @@ function movie_info_cb( $post ) {
     echo '<label for="movie_cast"></label>';
     echo '<input type="text" id="movie_cast" name="movie_cast" placeholder="cast" />';
   }
+  add_action( 'save_post', 'save_movie_details' );
+function save_movie_details( $post_id ) {
+
+  if ( 'page' == $_POST['post_type'] ) {
+    if ( !current_user_can( 'edit_page', $post_id ) )
+    return;
+  } else {
+    if ( !current_user_can( 'edit_post', $post_id ) )
+    return;
+  }
+  $movie_details = array(
+    'movie_writer'=> isset($_POST['movie_writer']) ? sanitize_text_field($_POST['movie_writer']): "Default",
+    'movie_cast'=> isset($_POST['movie_cast']) ? sanitize_text_field($_POST['movie_cast']): "Default",
+    'movie_release_date'=> isset($_POST['movie_release_date']) ? sanitize_text_field($_POST['movie_release_date']): "Default",
+  );
+  update_post_meta( $post_id, 'movie_writer', $movie_details );
+}
   
   
