@@ -36,7 +36,7 @@ class MySettingsPage
             $arr_op = array(
                 'my_id_number'=> isset($_POST['my_id_number']) ? absint($_POST['my_id_number']): "Default",
                 'my_title'=> isset($_POST['my_title']) ? sanitize_text_field($_POST['my_title']): "Default",
-                //'my_checkbox'=> isset($_POST['my_checkbox']) ? sanitize_checkbox($_POST['checkbox']): "Default",
+                'my_checkbox'=> isset($_POST['my_checkbox']) ? sanitize_text_field($_POST['my_checkbox']): "Default",
                 'my_select'=> isset($_POST['my_select']) ? sanitize_text_field($_POST['my_select']): "Default",
                 'my_textarea'=> isset($_POST['my_textarea']) ? sanitize_textarea_field($_POST['my_textarea']): "Default",
             );
@@ -169,7 +169,7 @@ class MySettingsPage
     }
     public function textarea_callback(){
         printf(
-            '<textarea id="textarea" name="my_textarea" value="%s"></textarea>',
+            '<textarea id="my_textarea" name="my_textarea" value="%s"></textarea>',
             isset( $this->options['my_textarea'] ) ? esc_attr( $this->options['my_textarea']) : ''
         );
     }
