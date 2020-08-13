@@ -14,7 +14,14 @@
  * Domain Path:       /languages
  */
 defined('ABSPATH') or die();
-function my_cpt() {
+class CustomPostType{
+  function __construct()
+  {
+    add_action( 'init', array($this, 'my_cpt' ));
+    add_action( 'add_meta_boxes', array($this, 'movie_metabox' ));
+    add_action( 'save_post', array($this, 'save_movie_details' ));
+  }
+  public function my_cpt() {
     $labels = array(
       'name'               => _x( 'Movies', 'post type general name' ),
       'singular_name'      => _x( 'Movie', 'post type singular name' ),
@@ -39,28 +46,26 @@ function my_cpt() {
     );
     register_post_type( 'movie', $args ); 
   }
-  add_action( 'init', 'my_cpt' );
-  add_action( 'add_meta_boxes', 'movie_metabox' );
-function movie_metabox() {
+  public function movie_metabox() {
     add_meta_box( 
         'movie_info', //Unique ID
         __( 'Movie Info', 'myplugin_textdomain' ),// Title
-        'movie_info_cb',//Callback function
+        array($this, 'movie_info_cb'),//Callback function
         'movie', //should be same as in register_post_type handle
         'side',
         'high'
     );
 }
-function movie_info_cb( $post ) {
-    wp_nonce_field( plugin_basename( __FILE__ ), 'movie_content_nonce' );
-    echo '<label for="movie_release_date"></label>';
-    echo '<input type="date" id="movie_release_date" name="movie_release_date" placeholder="Movie Released Date" />';
-    echo '<label for="movie_writer"></label>';
-    echo '<input type="text" id="movie_writer" name="movie_writer" placeholder="Writer" />';
-    echo '<label for="movie_cast"></label>';
-    echo '<input type="text" id="movie_cast" name="movie_cast" placeholder="cast" />';
-  }
-  add_action( 'save_post', 'save_movie_details' );
+public function movie_info_cb( $post ) {
+  $var = get_post_meta( $post->ID, 'movie_writer');
+  wp_nonce_field( plugin_basename( __FILE__ ), 'movie_content_nonce' );
+ echo '<label for="movie_release_date"></label>';
+ echo '<input type="date" id="movie_release_date" value="'. $var['0']['movie_release_date'] .'" name="movie_release_date" placeholder="Movie Released Date" />';
+ echo '<label for="movie_writer"></label>';
+ echo '<input type="text" id="movie_writer" value="'. $var['0']['movie_writer'] .'" name="movie_writer" placeholder="Writer" />';
+ echo '<label for="movie_cast"></label>';
+ echo '<input type="text" id="movie_cast" name="movie_cast" value="'. $var['0']['movie_cast'] .'" placeholder="cast" />';
+}
 function save_movie_details( $post_id ) {
 
   if ( 'page' == $_POST['post_type'] ) {
@@ -77,5 +82,11 @@ function save_movie_details( $post_id ) {
   );
   update_post_meta( $post_id, 'movie_writer', $movie_details );
 }
+}
+new CustomPostType();
+  
+  
+  
+
   
   

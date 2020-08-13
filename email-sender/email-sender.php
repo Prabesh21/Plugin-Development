@@ -13,37 +13,44 @@
  * Text Domain:       my-basics-plugin
  * Domain Path:       /languages
  */
-function menu_adder(){
-    add_menu_page('Menu Title', 'Mailsender', 'manage_options', 'send-mail', 'fn_cb');
-    add_submenu_page( 'send-mail', 'Send Mail', 'Settings menu label', 'manage_options', 'email-slug', 'mail_cb');
-  }
-  add_action('admin_menu', 'menu_adder');
-  add_action( 'admin_init', 'save_setting_details' );
-  function save_setting_details(){
-    if(isset($_POST['my_submit_button'])){
-        $my_email= $_POST['my_email'];
-        $my_subject = $_POST['my_subject'];
-        $my_message= $_POST['my_message'];
-        error_log($my_email);
-        error_log($my_message);
-        error_log($my_subject);        
-        wp_mail( $my_email, $my_subject, $my_message );
+class EmailSend{
+    function __construct()
+    {
+      add_action('admin_menu', array($this, 'menu_adder'));
+      add_action( 'admin_init', array($this, 'save_setting_details' ));
     }
-}
-   
-  function fn_cb(){
+    function menu_adder(){
+      add_menu_page('Menu Title', 'Mailsender', 'manage_options', 'send-mail', array($this, 'fn_cb'));
+      add_submenu_page( 'send-mail', 'Send Mail', 'Settings menu label', 'manage_options', 'email-slug', array($this, 'mail_cb'));
+    }
+    function fn_cb(){
           
+    }
+    function mail_cb(){
+      ?>
+      <div class="wrap">
+          <h1>My Settings</h1>
+          <form method="post">
+          Send Email To: <input type="email" id="my_email" name="my_email" /><br>
+          Message: <input type="text" id="my_message" name="my_message"  /><br>
+          Subject: <input type="text" id="my_subject" name="my_subject"  /><br>
+          <input type="submit" name="my_submit_button" value="Save"/>
+          </form>
+      </div>
+      <?php
+    }
+    function save_setting_details(){
+      if(isset($_POST['my_submit_button'])){
+          $my_email= $_POST['my_email'];
+          $my_subject = $_POST['my_subject'];
+          $my_message= $_POST['my_message'];     
+          wp_mail( $my_email, $my_subject, $my_message );
+      }
   }
-  function mail_cb(){
-    ?>
-    <div class="wrap">
-        <h1>My Settings</h1>
-        <form method="post">
-        Send Email To: <input type="email" id="my_email" name="my_email" /><br>
-        Message: <input type="text" id="my_message" name="my_message"  /><br>
-        Subject: <input type="text" id="my_subject" name="my_subject"  /><br>
-        <input type="submit" name="my_submit_button" value="Save"/>
-        </form>
-    </div>
-    <?php
-  }
+}
+new EmailSend();
+
+  
+   
+  
+  
