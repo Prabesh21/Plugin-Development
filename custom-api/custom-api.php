@@ -33,10 +33,13 @@ class MySettingsPage
     }
     public function save_setting_details(){
         if(isset($_POST['my_submit_button'])){
+            error_log(print_r($_POST, true));
             $arr_op = array(
                 'my_id_number'=> isset($_POST['my_id_number']) ? absint($_POST['my_id_number']): "Default",
                 'my_title'=> isset($_POST['my_title']) ? sanitize_text_field($_POST['my_title']): "Default",
-                'my_checkbox'=> isset($_POST['my_checkbox']) ? sanitize_text_field($_POST['my_checkbox']): "Default",
+                'my_checkbox'=> isset($_POST['my_checkbox']) ? sanitize_key($_POST['my_checkbox']): "",
+                'my_checkboxb'=> isset($_POST['my_checkboxb']) ? sanitize_key($_POST['my_checkboxb']): "",
+                'my_radio'=> isset($_POST['my_radio']) ? sanitize_key($_POST['my_radio']): "",
                 'my_select'=> isset($_POST['my_select']) ? sanitize_text_field($_POST['my_select']): "Default",
                 'my_textarea'=> isset($_POST['my_textarea']) ? sanitize_textarea_field($_POST['my_textarea']): "Default",
             );
@@ -118,6 +121,13 @@ class MySettingsPage
             'setting_section_id'
         );   
         add_settings_field(
+            'radio', 
+            'Radio', 
+            array( $this, 'radio_callback' ), 
+            'my-setting-admin', 
+            'setting_section_id'
+        );   
+        add_settings_field(
             'textarea', 
             'Textarea', 
             array( $this, 'textarea_callback' ), 
@@ -163,25 +173,47 @@ class MySettingsPage
     }
     public function checkbox_callback(){
         printf(
-            '<input type="checkbox" id="my_checkbox" name="my_checkbox" value="%s" />'.'Tick me',
-            isset( $this->options['my_checkbox'] ) ? esc_attr( $this->options['my_checkbox']) : ''
+            '<input type="checkbox" id="my_checkbox" %s name="my_checkbox" value="Nepali" />'.'Nepali',
+            isset( $this->options['my_checkbox'] ) ? "checked" : '',
+        );
+        printf(
+            '<input type="checkbox" id="my_checkboxb" %s name="my_checkboxb" value="English" />'.'English',
+            isset( $this->options['my_checkboxb'] ) ? "checked" : '',  
+        );
+    }
+    public function radio_callback(){
+        printf(
+            '<input type="radio" name="my_radio" %s value="Male"/>1',
+            isset( $this->options['my_radio'] ) ? "checked" : '',
+        );
+        printf(
+            '<input type="radio" name="my_radio" %s value="FeMale"/>1',
+            isset( $this->options['my_radio'] ) ? "checked" : '',
         );
     }
     public function textarea_callback(){
         printf(
-            '<textarea id="my_textarea" name="my_textarea" value="%s"></textarea>',
+            '<textarea id="my_textarea" name="my_textarea" value="">%s</textarea>',
             isset( $this->options['my_textarea'] ) ? esc_attr( $this->options['my_textarea']) : ''
         );
     }
     public function select_callback(){
-        printf(
-            '<select id="my_select" name="my_select">
-            <option value="select">  Select </option>
-            <option value="male">    Male   </option>
-            <option value="female">  Female </option>
-            </select>',
-            isset( $this->options['my_select'] ) ? esc_attr( $this->options['my_select']) : ''
+        $value = isset( $this->options['my_select'] ) ? esc_attr( $this->options['my_select']) : '';
+        $options = array(
+            'male' => 'Male',
+            'female' => 'Femalee',
         );
+        printf( '<select id="my_select" name="my_select">' );
+        printf( '<option> -- Select -- </option>' );
+        foreach ( $options as $option_value => $option_label ) {
+            printf(
+                '<option value="%s" %s >%s</option>',
+                $option_value,
+                $value === $option_value ? 'selected' : '',
+                $option_label
+            );
+        }
+        printf( '</select>' );
     }
 }
 
