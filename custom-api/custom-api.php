@@ -33,7 +33,6 @@ class MySettingsPage
     }
     public function save_setting_details(){
         if(isset($_POST['my_submit_button'])){
-            error_log(print_r($_POST, true));
             $arr_op = array(
                 'my_id_number'=> isset($_POST['my_id_number']) ? absint($_POST['my_id_number']): "Default",
                 'my_title'=> isset($_POST['my_title']) ? sanitize_text_field($_POST['my_title']): "Default",

@@ -18,6 +18,7 @@ class EmailSend{
     {
       add_action('admin_menu', array($this, 'menu_adder'));
       add_action( 'admin_init', array($this, 'save_setting_details' ));
+      add_action("init", array($this, "fn_to_include_file"));
     }
     function menu_adder(){
       add_menu_page('Menu Title', 'Mailsender', 'manage_options', 'send-mail', array($this, 'fn_cb'));
@@ -43,9 +44,12 @@ class EmailSend{
       if(isset($_POST['my_submit_button'])){
           $my_email= $_POST['my_email'];
           $my_subject = $_POST['my_subject'];
-          $my_message= $_POST['my_message'];     
-          wp_mail( $my_email, $my_subject, $my_message );
+          $my_message= isset($_POST['my_message'])?apply_filters("custom_filter", $_POST['my_message']): 'Default'; 
+          do_action("custom_action_for_sending_email", $my_email, $my_subject, $my_message);
       }
+  }
+  public function fn_to_include_file(){
+    include_once dirname(__FILE__).'/action.php';
   }
 }
 new EmailSend();

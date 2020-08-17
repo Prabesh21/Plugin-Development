@@ -68,13 +68,13 @@ public function movie_info_cb( $post ) {
 }
 function save_movie_details( $post_id ) {
 
-  if ( 'page' == $_POST['post_type'] ) {
-    if ( !current_user_can( 'edit_page', $post_id ) )
-    return;
-  } else {
-    if ( !current_user_can( 'edit_post', $post_id ) )
-    return;
-  }
+  // if ( 'page' == $_POST['post_type'] ) {
+  //   if ( !current_user_can( 'edit_page', $post_id ) )
+  //   return;
+  // } else {
+  //   if ( !current_user_can( 'edit_post', $post_id ) )
+  //   return;
+  // }
   $movie_details = array(
     'movie_writer'=> isset($_POST['movie_writer']) ? sanitize_text_field($_POST['movie_writer']): "Default",
     'movie_cast'=> isset($_POST['movie_cast']) ? sanitize_text_field($_POST['movie_cast']): "Default",
