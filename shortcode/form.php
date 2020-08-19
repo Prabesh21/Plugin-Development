@@ -70,6 +70,7 @@ a {
 <body>
 
 <form method="POST">
+<?php wp_nonce_field( 'create_user_form_submit', 'djie3duhb3edub3u' ); ?>
   <div class="container">
     <p>Please fill in this form to create an account.</p>
     <hr>
@@ -80,10 +81,26 @@ a {
     <label for="psw"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
-    <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="repeat-psw" id="psw-repeat" required>
-    <hr>
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter username" name="username" id="username" required>  
 
+    <label for="displayname"><b>Display Name</b></label>
+    <input type="text" placeholder="Enter display name" name="displayname" id="displayname" required>
+
+    <label for="firstname"><b>First Name</b></label>
+    <input type="text" placeholder="Enter firstname" name="firstname" id="firstname" required>
+
+    <label for="lastname"><b>Last Name</b></label>
+    <input type="text" placeholder="Enter lastname" name="lastname" id="lastname" required>
+
+    <label for="role">Choose a Role:</label>
+
+<select name="role" id="role">
+  <option value="subscriber">Subscirber</option>
+  <option value="editor">Editor</option>
+  <option value="administrator">Administrator</option>
+</select>
+    <hr>
     <button type="submit" name="my_submit" class="registerbtn">Register</button>
   </div>
   
