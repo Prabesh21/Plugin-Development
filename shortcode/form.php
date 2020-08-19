@@ -111,5 +111,3 @@ a {
 
 </body>
 </html>
-<?php
-include_once dirname(__FILE__).'/action.php';

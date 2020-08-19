@@ -15,6 +15,28 @@
  */
 add_action( 'add_meta_boxes', 'add_post_meta_boxes' );
 add_action( 'save_post', 'save_movie_details');
+add_action( 'comment_form_before', 'fn_template_for_metabox');
+function fn_template_for_metabox(){
+  $var = get_post_meta( get_the_ID(), 'my_meta_details');
+  $textbox = isset($var['0']['my_textbox'])? $var['0']['my_textbox']:'';
+  $select = isset($var['0']['my_select'])? $var['0']['my_select']:'';
+  $textarea = isset($var['0']['my_textarea'])? $var['0']['my_textarea']:'';
+  echo '<table>';
+  echo '<tr>';
+  echo '<td>Textbox</td>';
+  echo '<td>'.$textbox.'</td>';
+  echo '</tr>';
+  echo '<tr>';
+  echo '<td>TextArea</td>';
+  echo '<td>'.$textarea.'</td>';
+  echo '</tr>';
+  echo '<tr>';
+  echo '<td>Select</td>';
+  echo '<td>'.$select.'</td>';
+  echo '</tr>';
+  echo '</table>';
+
+}
 /* Create one or more meta boxes to be displayed on the post editor screen. */
 function add_post_meta_boxes() {
 

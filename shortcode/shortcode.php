@@ -20,15 +20,9 @@ class UsingShortcode{
       add_shortcode("my_registration_form", array($this, 'fn_reg_form'));
     }
 
-    public function fn_reg_form($atts = [], $content = null, $tag = ''){
-        $atts = array_change_key_case( (array) $atts, CASE_LOWER );
-        $wporg_atts = shortcode_atts(
-            array(
-                'redirect_after_registration' => 'https://basic.pm/sample-page',
-            ), $atts, $tag
-        );
-    $link = $wporg_atts['redirect_after_registration'];
-    include_once dirname(__FILE__).'/form.php';       
+    public function fn_reg_form($atts, $content = null, $tag = ''){
+    include_once dirname(__FILE__).'/form.php';
+    include_once dirname(__FILE__).'/action.php';       
     }
 }
 new UsingShortcode();
