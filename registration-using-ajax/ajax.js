@@ -1,5 +1,4 @@
 jQuery(document).ready(function($) {
-    console.log("Helo");
     /**
      * When user clicks on button...
      *
