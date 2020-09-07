@@ -89,7 +89,7 @@ function vb_register_user_scripts() {
             }
             wp_send_json_error($result);
         }
-        
+        error_log(print_r($result));
   
 
 }
