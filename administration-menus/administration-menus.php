@@ -14,15 +14,21 @@
  * Domain Path:       /languages
  */
 defined('ABSPATH') or die();
-class AdminMenu{
-    function __construct()
+abstract class AdminMenuAbs{    
+    abstract public function create_menu();
+    abstract protected static function abs_function();
+
+}
+class AdminMenu extends AdminMenuAbs{
+   
+    public function create_menu()
     {
         add_action("admin_menu", array($this, "add_my_custom_menu"));
     }
-    function add_my_custom_menu(){
+    public function add_my_custom_menu(){
         add_menu_page(
-            "customplugin", // page title
-            "Movie", // menu title
+            __('customplugin','administration-menus'), // page title
+            __('Movie', 'administration-menus'), // menu title
             "manage_options", // admin level
             "top-level-menu-slug",   // page slug
             array($this, "call_top_menu"), // callback function
@@ -31,31 +37,36 @@ class AdminMenu{
             );
         add_submenu_page(
             "top-level-menu-slug", //parent slug
-            "Submenu1-title", //page title
-            "Dashboard", //menu title
+            __('Submenu1-title','administration-menus'), //page title
+            __('Dashboard','administration-menus'), //menu title
             "manage_options", //capability = user_level_access
             "sub-menu1-slug", //menu slug
             array($this, "call_submenu1") //callback function
         );
         add_submenu_page(
             "top-level-menu-slug", //parent slug
-            "Submenu2-title", //page title
-            "Settings", //menu title
+            __('Submenu2-title','administration-menus'), //page title
+            __('Settings','administration-menus'), //menu title
             "manage_options", //capability = user_level_access
             "sub-menu2-slug", //menu slug
             array($this, "call_submenu2") //callback function
         );
     }
-    function call_top_menu(){
+    public static function call_top_menu(){
     
     }
-    function call_submenu1(){
+    public function call_submenu1(){
         
     }
-    function call_submenu2(){
+    public function call_submenu2(){
+        }
+    public static function abs_function(){
+            _e('This is from abstract staic function', 'administration-menus');
         }
 }
-new AdminMenu();
+$obj = new AdminMenu();
+$obj->create_menu();
+AdminMenu::abs_function();
 
 
  
